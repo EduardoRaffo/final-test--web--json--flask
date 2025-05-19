@@ -2,6 +2,7 @@
 from dotenv import load_dotenv
 import validations as v
 import sqlite3
+import json
 import os
 from flask_ngrok import run_with_ngrok
 from flask import Flask, request, render_template
@@ -23,18 +24,21 @@ run_with_ngrok(app)
 def formulario():
     mensaje =""
     if request.method == "POST":
-        user_name = request.form.get("nombre")
-        user_adress = request.form.get("apellido")
-        email = request.form.get("email")
-        password = request.form.get("contraseña")
-        phone_num = request.form.get("phone_num")
-        user_age = request.form.get("edad")
-        if not v.Check_email(email):
-            mensaje = "Por favor, ingresa un email, válido."
+        data = {
+            "user_name": request.form.get("nombre", "").strip(),
+            "user_surname": request.form.get("apellido", "").strip(),
+            "email": request.form.get("email", "").strip(),
+            "password": request.form.get("contraseña", "").strip(),
+            "phone_num": request.form.get("phone_num", "").strip(),
+            "user_age": request.form.get("edad", "").strip()
+        }
+        validator = v.UserValidator(data)
+        if validator.validate():            
+            mensaje = "Usuario registrado correctamente!"
         else:
-            mensaje = "Email correctamente guardado."
+            mensaje = "Errores: " + ", ".join(validator.errors)
+    
     return render_template("formulario.html", mensaje=mensaje)
-
 
 if __name__ == "__main__":
     print(f" * Running on {public_url.public_url}")
