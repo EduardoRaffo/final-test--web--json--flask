@@ -1,5 +1,7 @@
 #!pip install pyngrok flask-ngrok
 from dotenv import load_dotenv
+from json_users_data import Load_users,Save_users,FILENAME
+from types import SimpleNamespace
 import validations as v
 import sqlite3
 import json
@@ -9,7 +11,6 @@ from flask import Flask, request, render_template
 from pyngrok import ngrok, conf
 
 load_dotenv()  # carga las variables del archivo .env en el entorno
-
 TOKEN = os.getenv("NGROK_TOKEN")
 if not TOKEN:
     raise Exception("No se ha cargado NGROK_TOKEN")
@@ -33,7 +34,10 @@ def formulario():
             "user_age": request.form.get("edad", "").strip()
         }
         validator = v.UserValidator(data)
-        if validator.validate():            
+        if validator.validate():
+            users = Load_users()
+            users.append(SimpleNamespace(**data))    
+            Save_users(users)      
             mensaje = "Usuario registrado correctamente!"
         else:
             mensaje = "Errores: " + ", ".join(validator.errors)
