@@ -35,7 +35,7 @@ class UserValidator:
         validators = {
             "email": (Check_email, "Email invalido."),
             "user_name": (Check_name, "Nombre invalido."),
-            "user_surname": (Check_surname, "Apeliido invalido."),
+            "user_surname": (Check_surname, "Apellido invalido."),
             "password": (Check_password, "Contraseña demasiado corta, minimo 6 caracteres"),
             "phone_num": (Check_phone, "Número de telefono invalido"),
             "user_age": (Check_age, "Edad no valida."),

@@ -1,0 +1,20 @@
+[
+    {
+        "user_name": "ed",
+        "user_surname": "Eduardo",
+        "email": "mvrpjjwg27@privaterelay.appleid.com",
+        "password": "eeeeeeeeeeee",
+        "phone_num": "662295949",
+        "user_age": "102",
+        "id": 1
+    },
+    {
+        "user_name": "dfs",
+        "user_surname": "sdffdsdfs",
+        "email": "mvrpjjwg27@privaterelay.appleid.com",
+        "password": "sdfdsdfsdsf",
+        "phone_num": "662295949",
+        "user_age": "103",
+        "id": 2
+    }
+]

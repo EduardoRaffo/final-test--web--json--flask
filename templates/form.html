@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="translucent-form p-6 sm:p-8 w-full max-w-lg mx-4 sm:mx-auto mt-20">
+  <h1 class="text-2xl font-bold mb-6 text-center text-white drop-shadow-md">Formulario de Registro</h1>
+
+  {% if mensaje %}
+    <div class="mb-4 p-3 rounded text-center font-semibold 
+                {% if 'correctamente' in mensaje %}bg-green-500/80 text-white{% else %}bg-red-500/80 text-white{% endif %}">
+      {{ mensaje }}
+    </div>
+  {% endif %}
+
+  <form method="post" class="space-y-4" novalidate>
+
+    <!-- Nombre y Apellido -->
+    <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+      <div class="relative group w-full sm:w-1/2">
+        <input
+          type="text"
+          name="nombre"
+          placeholder="Nombre"
+          value="{{ valores.nombre if valores else '' }}"
+          required
+          class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500
+                 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm sm:text-base"
+          aria-describedby="nombre-help"
+        />
+        <div id="nombre-help" class="absolute -top-7 left-0 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+          Introduce tu nombre completo
+        </div>
+      </div>
+      <div class="relative group w-full sm:w-1/2">
+        <input
+          type="text"
+          name="apellido"
+          placeholder="Apellido"
+          value="{{ valores.apellido if valores else '' }}"
+          required
+          class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500
+                 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm sm:text-base"
+          aria-describedby="apellido-help"
+        />
+        <div id="apellido-help" class="absolute -top-7 left-0 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+          Introduce tu apellido completo
+        </div>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="relative group">
+      <input
+        type="email"
+        name="email"
+        placeholder="Introduce tu email"
+        value="{{ valores.email if valores else '' }}"
+        required
+        class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500
+               dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm sm:text-base"
+        aria-describedby="email-help"
+      />
+      <div id="email-help" class="absolute -top-7 left-0 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        Ejemplo: usuario@dominio.com
+      </div>
+    </div>
+
+    <!-- Contraseña con botón mostrar/ocultar -->
+    <div class="relative group">
+      <input
+        type="password"
+        id="password-field"
+        name="contraseña"
+        placeholder="Contraseña (mínimo 6 caracteres)"
+        required
+        minlength="6"
+        class="w-full p-3 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500
+               dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm sm:text-base"
+        aria-describedby="password-help"
+      />
+      <button
+        type="button"
+        id="toggle-password"
+        class="absolute top-0 right-0 h-full w-10 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-white bg-opacity-30 rounded-r-md"
+        aria-label="Mostrar contraseña"
+        aria-pressed="false"
+        tabindex="0"
+      >
+        <!-- SVG Ojo visible -->
+        <svg id="icon-eye" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+        <!-- SVG Ojo tachado oculto inicialmente -->
+        <svg id="icon-eye-off" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.964 9.964 0 012.561-3.488M6.215 6.215A9.953 9.953 0 0112 5c4.477 0 8.268 2.943 9.542 7a10.056 10.056 0 01-1.936 3.592M3 3l18 18" />
+        </svg>
+      </button>
+      <div id="password-help" class="absolute -top-7 left-0 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        Mínimo 6 caracteres (letras, números y símbolos)
+      </div>
+    </div>
+
+    <!-- Teléfono -->
+    <div class="relative group">
+      <input
+        type="tel"
+        name="phone_num"
+        placeholder="Número de teléfono"
+        value="{{ valores.phone_num if valores else '' }}"
+        required
+        pattern="\d{9,10}"
+        class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500
+               dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm sm:text-base"
+        aria-describedby="phone-help"
+      />
+      <div id="phone-help" class="absolute -top-7 left-0 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        Ejemplo: 612345678 (9-10 dígitos)
+      </div>
+    </div>
+
+    <!-- Edad -->
+    <div class="relative group">
+      <input
+        type="number"
+        name="edad"
+        placeholder="Edad"
+        value="{{ valores.user_age if valores else '' }}"
+        required
+        min="10"
+        max="120"
+        class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500
+               dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm sm:text-base"
+        aria-describedby="age-help"
+      />
+      <div id="age-help" class="absolute -top-7 left-0 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        Debe ser entre 10 y 120 años
+      </div>
+    </div>
+
+    <!-- Botón de envío -->
+    <button
+      type="submit"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded shadow-lg transition duration-200 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+    >
+      Enviar Registro
+    </button>
+  </form>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.getElementById('toggle-password');
+    const passwordField = document.getElementById('password-field');
+    const iconEye = document.getElementById('icon-eye');
+    const iconEyeOff = document.getElementById('icon-eye-off');
+
+    if (togglePassword && passwordField && iconEye && iconEyeOff) {
+      const toggleVisibility = () => {
+        const isVisible = passwordField.type === 'text';
+        passwordField.type = isVisible ? 'password' : 'text';
+
+        if (isVisible) {
+          iconEye.classList.remove('hidden');
+          iconEyeOff.classList.add('hidden');
+          togglePassword.setAttribute('aria-label', 'Mostrar contraseña');
+          togglePassword.setAttribute('aria-pressed', 'false');
+        } else {
+          iconEye.classList.add('hidden');
+          iconEyeOff.classList.remove('hidden');
+          togglePassword.setAttribute('aria-label', 'Ocultar contraseña');
+          togglePassword.setAttribute('aria-pressed', 'true');
+        }
+      };
+
+      togglePassword.addEventListener('click', toggleVisibility);
+
+      togglePassword.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleVisibility();
+        }
+      });
+    }
+
+    // Validación en tiempo real para edad
+    const ageInput = document.querySelector('input[name="edad"]');
+    if (ageInput) {
+      ageInput.addEventListener('input', function() {
+        if (this.value < 10) this.value = 10;
+        if (this.value > 120) this.value = 120;
+      });
+    }
+  });
+</script>
+
+{% endblock %}

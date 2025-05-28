@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html id="html-root" lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Panel de Usuarios{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
+  <script>
+    window.onload = function () {
+      if (localStorage.getItem("theme") === "dark") {
+        document.getElementById("html-root").classList.add("dark");
+      }
+
+      // Crear estrellas dinámicamente
+      const starContainer = document.querySelector('.stars');
+      const starCount = 100;
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('span');
+        star.classList.add('star');
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.left = Math.random() * 100 + 'vw';
+        const size = Math.random() * 2 + 1;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.animationDelay = (Math.random() * 5) + 's';
+        starContainer.appendChild(star);
+      }
+    };
+
+    function toggleDarkMode() {
+      const el = document.getElementById("html-root");
+      if (el.classList.contains("dark")) {
+        el.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      } else {
+        el.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      }
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #000428 0%, #004e92 100%);
+      overflow: hidden;
+      position: relative;
+      font-family: system-ui, sans-serif;
+    }
+
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 4s infinite alternate;
+      filter: drop-shadow(0 0 1px white);
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.8; }
+      100% { opacity: 0.2; }
+    }
+
+    .translucent-form {
+      background-color: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      position: relative;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body class="dark:bg-gray-900 dark:text-white min-h-screen relative">
+
+  <!-- Fondo de estrellas -->
+  <div class="stars"></div>
+
+  <!-- Botón de modo oscuro -->
+  <button
+    onclick="toggleDarkMode()"
+    class="absolute top-4 right-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded
+           transition-transform transition-shadow duration-300
+           hover:scale-110 hover:shadow-lg
+           focus:scale-110 focus:shadow-lg z-20"
+    aria-label="Cambiar modo oscuro"
+  >
+    🌙 Modo Oscuro
+  </button>
+
+  <!-- Botón menú móvil arriba -->
+  <button
+    id="menu-toggle"
+    class="absolute top-4 left-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-3 py-2 rounded
+           md:hidden z-30"
+    aria-label="Abrir menú"
+  >
+    ☰ Menú
+  </button>
+
+  <!-- Contenedor general con menú y contenido -->
+  <div class="flex flex-col md:flex-row z-10 w-full pt-24 sm:pt-28">
+
+    <!-- Menú -->
+    <nav
+      id="sidebar"
+      class="translucent-form text-white p-4 w-full space-y-4
+         fixed top-16 left-0 right-0 max-h-0 overflow-hidden opacity-0 pointer-events-none
+         transition-all duration-300 ease-in-out
+         md:relative md:max-h-full md:w-64 md:h-auto md:block md:overflow-visible md:opacity-100 md:pointer-events-auto"
+      style="z-index: 20;"
+    >
+      <ul class="flex flex-col md:block">
+  <li><a href="/" class="block px-2 py-1 hover:underline hover:text-blue-300 transition">Formulario</a></li>
+  <li><a href="/usuarios" class="block px-2 py-1 hover:underline hover:text-blue-300 transition">Usuarios</a></li>
+      </ul>
+    </nav>
+
+    <!-- Contenido dinámico -->
+    <main class="flex-1 p-6">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = sidebar.style.maxHeight && sidebar.style.maxHeight !== "0px";
+      if (isOpen) {
+        sidebar.style.maxHeight = "0";
+        sidebar.style.opacity = "0";
+        sidebar.style.pointerEvents = "none";
+      } else {
+    sidebar.style.maxHeight = sidebar.scrollHeight + "px";
+    sidebar.style.opacity = "1";
+    sidebar.style.pointerEvents = "auto";
+  }
+    });
+  </script>
+
+</body>
+</html>
