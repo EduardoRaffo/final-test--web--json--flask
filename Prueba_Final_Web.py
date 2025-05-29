@@ -51,7 +51,7 @@ def Show_users():
     with open(FILENAME, 'r', encoding='utf-8') as archivo:
         usuarios = json.load(archivo, object_hook=lambda d: SimpleNamespace(**d))
     return render_template('users.html', usuarios=usuarios)
-@app.route("/delete_user/<int:user_id>", methods=["POST"])
+@app.route("/delete_user/<int:user_id>", methods=["GET"])
 def delete_user(user_id):
     Delete_user(user_id)
     return redirect(url_for("Show_users"))
