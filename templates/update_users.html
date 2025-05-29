@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="translucent-form p-6 sm:p-8 w-full max-w-lg mx-auto mt-20">
+  <h1 class="text-2xl font-bold mb-6 text-center text-white">Editar Usuario</h1>
+    
+  {% if mensaje %}
+    <div class="mb-4 p-3 rounded text-center font-semibold 
+                {% if 'correctamente' in mensaje %}bg-green-500/80 text-white{% else %}bg-red-500/80 text-white{% endif %}">
+      {{ mensaje }}
+    </div>
+  {% endif %}
+
+  <form method="POST" action="{{ url_for('update_user', user_id=user_id) }}">
+    <div class="mb-4">
+      <label class="block text-white">Nombre:</label>
+      <input type="text" name="nombre" value="{{ usuario.user_name }}" class="w-full rounded p-2">
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-white">Apellido:</label>
+      <input type="text" name="apellido" value="{{ usuario.user_surname }}" class="w-full rounded p-2">
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-white">Email:</label>
+      <input type="email" name="email" value="{{ usuario.email }}" class="w-full rounded p-2">
+    </div>
+
+    <div class="relative group">
+      <input
+        type="password"
+        id="password-field"
+        name="contraseña"
+        placeholder="Contraseña (mínimo 6 caracteres)"
+        required
+        minlength="6"
+        class="w-full p-3 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500
+               dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm sm:text-base"
+        aria-describedby="password-help"
+      />
+      <button
+        type="button"
+        id="toggle-password"
+        class="absolute top-0 right-0 h-full w-10 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-white bg-opacity-30 rounded-r-md"
+        aria-label="Mostrar contraseña"
+        aria-pressed="false"
+        tabindex="0"
+      >
+        <!-- SVG Ojo visible -->
+        <svg id="icon-eye" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+        <!-- SVG Ojo tachado oculto -->
+        <svg id="icon-eye-off" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.964 9.964 0 012.561-3.488M6.215 6.215A9.953 9.953 0 0112 5c4.477 0 8.268 2.943 9.542 7a10.056 10.056 0 01-1.936 3.592M3 3l18 18" />
+        </svg>
+      </button>
+      <div id="password-help" class="absolute -top-7 left-0 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        Mínimo 6 caracteres (letras, números y símbolos)
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-white">Teléfono:</label>
+      <input type="text" name="phone_num" value="{{ usuario.phone_num }}" class="w-full rounded p-2">
+    </div>
+
+    <div class="mb-6">
+      <label class="block text-white">Edad:</label>
+      <input type="number" name="edad" value="{{ usuario.user_age }}" class="w-full rounded p-2">
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar Cambios</button>
+    </div>
+  </form>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.getElementById('toggle-password');
+    const passwordField = document.getElementById('password-field');
+    const iconEye = document.getElementById('icon-eye');
+    const iconEyeOff = document.getElementById('icon-eye-off');
+
+    if (togglePassword && passwordField && iconEye && iconEyeOff) {
+      const toggleVisibility = () => {
+        const isVisible = passwordField.type === 'text';
+        passwordField.type = isVisible ? 'password' : 'text';
+
+        if (isVisible) {
+          iconEye.classList.remove('hidden');
+          iconEyeOff.classList.add('hidden');
+          togglePassword.setAttribute('aria-label', 'Mostrar contraseña');
+          togglePassword.setAttribute('aria-pressed', 'false');
+        } else {
+          iconEye.classList.add('hidden');
+          iconEyeOff.classList.remove('hidden');
+          togglePassword.setAttribute('aria-label', 'Ocultar contraseña');
+          togglePassword.setAttribute('aria-pressed', 'true');
+        }
+      };
+
+      togglePassword.addEventListener('click', toggleVisibility);
+
+      togglePassword.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleVisibility();
+        }
+      });
+    }
+
+    // Validación en tiempo real para edad
+    const ageInput = document.querySelector('input[name="edad"]');
+    if (ageInput) {
+      ageInput.addEventListener('input', function() {
+        if (this.value < 10) this.value = 10;
+        if (this.value > 120) this.value = 120;
+      });
+    }
+  });
+</script>
+
+{% endblock %}

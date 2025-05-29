@@ -25,3 +25,10 @@ def Delete_user(user_id):
     users = Load_users()
     users = [user for user in users if user.id != user_id]
     Save_users(users)
+
+def User_by_ID(user_id):
+    usuarios = Load_users()
+    for i, user in enumerate(usuarios):
+        if user.id == user_id:
+            return i, user
+    return None, None
