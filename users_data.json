@@ -1,11 +1,29 @@
 [
     {
-        "user_name": "eduardo",
-        "user_surname": "sdffdsdfs",
-        "email": "mvrpjjwg27@privaterelay.appleid.com",
-        "password": "sdfdsdfsdsf",
-        "phone_num": "6622959491",
-        "user_age": "103",
+        "user_name": "Deusto",
+        "user_surname": "Formación",
+        "email": "deusto@edu.edu",
+        "password": "123123asdas",
+        "phone_num": "000000001",
+        "user_age": "102",
         "id": 1
+    },
+    {
+        "user_name": "lucia",
+        "user_surname": "martinez",
+        "email": "lucia.martinez10@goo.gle",
+        "password": "123412341241424214141",
+        "phone_num": "000000002",
+        "user_age": "11",
+        "id": 2
+    },
+    {
+        "user_name": "eduardo",
+        "user_surname": "raffo",
+        "email": "eduardoraffo26@gmail.com",
+        "password": "Eduardo.raffo.benitez.deusto.formacion",
+        "phone_num": "000000003",
+        "user_age": "27",
+        "id": 3
     }
 ]

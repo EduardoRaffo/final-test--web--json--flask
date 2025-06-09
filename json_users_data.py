@@ -8,10 +8,9 @@ def Load_users():
             if not content:
                 return []
             return json.loads(content, object_hook=lambda d: SimpleNamespace(**d))
-    except FileNotFoundError:
-        return []
-    except json.JSONDecodeError:
-        # El archivo existe pero está corrupto o vacío
+    except FileNotFoundError: #si el archivo no exite
+        return [] 
+    except json.JSONDecodeError: # si el archivo esta corrupto
         return []
 
 def Save_users(users_list):
